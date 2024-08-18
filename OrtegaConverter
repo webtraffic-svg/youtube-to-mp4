@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube to MP4 Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            color: #ff0000; /* YouTube red */
+            margin-top: 20px;
+        }
+        form {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            padding: 20px;
+            margin: 20px;
+        }
+        label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+            max-width: 100%;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #ff0000; /* YouTube red */
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #cc0000;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #ff0000; /* YouTube red */
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube to MP4 Converter</h1>
+    <form id="convertForm">
+        <label for="url">YouTube URL:</label>
+        <input type="text" id="url" name="url" placeholder="Enter YouTube URL" required>
+        <button type="submit">Convert</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('convertForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const url = document.getElementById('url').value;
+
+            fetch('/convert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = `<a href="${data.downloadUrl}">Download MP4</a>`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'An error occurred.';
+            });
+        });
+    </script>
+</body>
+</html>
